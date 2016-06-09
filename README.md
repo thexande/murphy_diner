@@ -85,3 +85,9 @@ When I click Deliver It!
 Then my order is submitted to the company
 And I see a pop up containing the response from submitting my order
 ```
+
+__#6 The world should be able to see your app__
+
+1. Using Firebase, deploy your app.
+2. Add a README to your project with the link to your deployed app.
+3. Submit a __pull request__ 
