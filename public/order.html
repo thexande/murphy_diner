@@ -1,41 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Order</title>
-  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css" media="screen" title="no title" charset="utf-8">
-  <!-- Include override css after bootstrap  -->
-  <link rel="stylesheet" href="../public/css/bootstrap_overrides.css" media="screen" title="no title" charset="utf-8">
-  <link rel="stylesheet" href="../public/css/style.css" media="screen" title="no title" charset="utf-8">
+    <meta charset="UTF-8">
+    <title>Order</title>
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css" media="screen" title="no title" charset="utf-8">
+    <!-- Include override css after bootstrap  -->
+    <link rel="stylesheet" href="../public/css/bootstrap_overrides.css" media="screen" title="no title" charset="utf-8">
+    <link rel="stylesheet" href="../public/css/style.css" media="screen" title="no title" charset="utf-8">
 </head>
 <body>
-	<div id="bodyContainer">
-		<div id="headingTitle">Galvanize Eats</div>
-		<div id="heading"></div>
-		<div class="container">
-			<br><br>
-			<div class='col-md-6'>
-				<div class="panel panel-default">
-					<div class="panel-heading">Order Options</div>
-					<div class="panel-body">
-						<select multiple name="menu" id="menuMultiselect"></select>
-					</div>
-					<div class="panel-footer">footer</div>
-				</div>
-			</div>
-			<div class="col-md-6">
-				<div class="panel panel-default">
-					<div class="panel-heading">Order Summary</div>
-					<div class="panel-body">body</div>
-					<div class="panel-footer">footer</div>
-				</div>
-			</div>
-		</div>
-		<div id="footer">&copy Galvanize 2016 Denver, Colorado</div>
-	</div>
-  <script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
-  <script type="text/javascript" src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="../bower_components/underscore/underscore-min.js"></script>
-  <script type="text/javascript" src="../public/js/app.js"></script>
+    <div id="bodyContainer">
+        <div id="headingTitle">Galvanize Eats</div>
+        <div id="heading"></div>
+        <div class="container">
+            <br>
+            <br>
+            <div class='col-md-6'>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Order Options</div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                          <select multiple name="menu" class="form-control" id="menuMultiselect"></select>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Quantity">
+                            <span class="input-group-btn">
+                              <button class="btn btn-success" id="addItemsToCart" type="button">Add Selected Items to Cart</button>
+                            </span>
+                        </div>
+                        <form id="customerInfo" name="customerInfo" class="form-horizontal">
+
+                            <fieldset>
+                                <legend>Customer Information</legend>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="textinput">Customer Name</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="name" name="name" placeholder="Customer Name" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="textinput">Customer Phone #</label>
+                                    <div class="col-sm-10">
+                                        <input id="phone" type="text" name="phone" placeholder="1(111)-111-1111" class="form-control">
+                                    </div>
+                                </div>
+                                <legend>Customer Address Details</legend>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="textinput">Line 1</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" name="addr_line_1" placeholder="Address Line 1" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="textinput">Line 2</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" name="addr_line_1" placeholder="Address Line 2" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="textinput">City</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" name="city" placeholder="City" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="textinput">State</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="state" placeholder="State" class="form-control">
+                                    </div>
+
+                                    <label class="col-sm-2 control-label" for="textinput">Postcode</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name= "zip" placeholder="Post Code" class="form-control">
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="textinput">Country</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" name="country" placeholder="Country" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <div class="pull-right">
+                                            <button type="submit" class="btn btn-primary">Submit Order</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Order Summary</div>
+                    <div class="panel-body">body</div>
+                    <div class="panel-footer">footer</div>
+                </div>
+            </div>
+        </div>
+        <div id="footer">&copy Galvanize 2016 Denver, Colorado</div>
+    </div>
+    <script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="../bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript" src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../bower_components/underscore/underscore-min.js"></script>
+    <script type="text/javascript" src="../public/js/app.js"></script>
 </body>
+
 </html>
