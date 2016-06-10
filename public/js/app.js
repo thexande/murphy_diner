@@ -1,5 +1,8 @@
 $(document).ready(function(){
+  var itemsOrdered = {data:[]}
+  var itemsFromAPI
   $.getJSON('https://galvanize-eats-api.herokuapp.com/menu', function(response){
+      itemsFromAPI = response
       var optGroupPizza = $("<optgroup>", {label:'Pizzas'})
       var optGroupBurger = $("<optgroup>", {label:'Burgers'})
       var spaceReturn = function(length, price){
@@ -14,25 +17,68 @@ $(document).ready(function(){
           var spaceDiff = 55 - (parseInt(val.name.length)
             + parseInt(val.price.toString().length));
           optGroupBurger.append($('<option>',
-            {html:val.name + spaceReturn(spaceDiff, val.price) + val.price}))
+            {value:val.id, html:val.name + spaceReturn(spaceDiff, val.price) + val.price}))
         } else if(val.type === 'pizza'){
           var spaceDiff = 55 - (parseInt(val.name.length)
             + parseInt(val.price.toString().length));
           optGroupPizza.append($('<option>',
-            {html:val.name + spaceReturn(spaceDiff, val.price) + val.price}))
+            {value:val.id, html:val.name + spaceReturn(spaceDiff, val.price) + val.price}))
         }
       })
       $('#menuMultiselect').append(optGroupPizza, optGroupBurger)
   })
+
   $("#customerInfo").submit(function(e){
       console.log("submit");
-
       var data = JSON.stringify($(this).serializeArray())
       console.log(data);
 
+
   })
   $('#addItemsToCart').click(function(click){
-    var selected = $('#menuMultiselect').val()
-    console.log(selected);
+    // any items selected? or qty?
+    if(!$('#menuMultiselect').val()){alert("select an item"); return}
+    if(!$('#itemQuantity').val()){alert("enter a qty"); return}
+    // get our items selected and add them to our order obj
+    $('#menuMultiselect').val().forEach(function(val, key, arr){
+      var item = itemsFromAPI.menu[parseInt(val - 1)]
+
+      console.log();
+
+      if(itemsOrdered.data.indexOf(item) != -1){
+        itemsOrdered.data.filter((a) => {return a['id']===item.id})[0].qty
+          += parseInt($('#itemQuantity').val())
+      } else {
+        itemsOrdered.data.push(item)
+        item['qty'] = parseInt($('#itemQuantity').val())
+      }
+    })
+    // reload data table
+    var table = $('#itemsOrderedTable').dataTable().api()
+    table.clear()
+    table.rows.add(itemsOrdered.data)
+    table.draw()
+  })
+  $('#itemsOrderedTable').DataTable({
+    "language": {
+      "emptyTable": "Add some items to your order!"
+    },
+    columns: [
+       {title:'id'},
+       {title:'name'},
+       {title:'price'},
+       {title:'type'}
+     ],
+    searching: false,
+    ordering: false,
+    paging: false,
+    info: false,
+    "aaData": itemsOrdered.data,
+    "aoColumns": [
+      { "title": 'Qty', "mDataProp": "qty" },
+      { "title": "Food Item", "mDataProp": "name" },
+      { "title": "price", "mDataProp": "price" },
+      { "title": "type", "mDataProp": "type" }
+    ]
   })
 })

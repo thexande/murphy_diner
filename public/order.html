@@ -23,7 +23,7 @@
                           <select multiple name="menu" class="form-control" id="menuMultiselect"></select>
                         </div>
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Quantity">
+                            <input type="number" class="form-control" id="itemQuantity" placeholder="Quantity">
                             <span class="input-group-btn">
                               <button class="btn btn-success" id="addItemsToCart" type="button">Add Selected Items to Cart</button>
                             </span>
@@ -74,15 +74,12 @@
                                         <input type="text" name= "zip" placeholder="Post Code" class="form-control">
                                     </div>
                                 </div>
-
-
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" for="textinput">Country</label>
                                     <div class="col-sm-10">
                                         <input type="text" name="country" placeholder="Country" class="form-control">
                                     </div>
                                 </div>
-
                                 <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-10">
                                         <div class="pull-right">
@@ -99,7 +96,9 @@
             <div class="col-md-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">Order Summary</div>
-                    <div class="panel-body">body</div>
+                    <div class="panel-body">
+                      <table id="itemsOrderedTable" class="table table-striped table-bordered" cellspacing="0" width="100%"></table>
+                    </div>
                     <div class="panel-footer">footer</div>
                 </div>
             </div>
