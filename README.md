@@ -18,6 +18,7 @@ __NOTES:__
 
 1. Use [Font Awesome](http://fontawesome.io/icons/) to display site icons
 2. You can find the background image in the media folder in the assessment repo
+3. _optional_ Open Sans Google Font
 
 __#2 User can navigate to the orders page__
 
@@ -52,6 +53,7 @@ When I select a menu item
 And I select a quantity
 And I click the Add Item button
 Then I see my menu items added to the shopping cart on the right
+And I cannot order more than 20 of each item
 ```
 
 __#3 User sees subtotal, tax and grand total__
@@ -90,4 +92,4 @@ __#6 The world should be able to see your app__
 
 1. Using Firebase, deploy your app.
 2. Add a README to your project with the link to your deployed app.
-3. Submit a __pull request__ 
+3. Submit a __pull request__
