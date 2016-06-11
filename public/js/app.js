@@ -71,8 +71,11 @@ $(document).ready(function(){
   $("#customerInfo").submit(function(e){
       event.preventDefault()
       console.log("submit");
-      var data = JSON.stringify($(this).serializeArray())
-      sendPost(data).done(function(data){
+      var data = $(this).serializeArray()
+      var postObj = {formData: data, cartData: itemsOrdered};
+      $('#jsonContainer').html(JSON.stringify(postObj, null, 2))
+      $('#jsonInfoModal').modal()
+      sendPost(postObj).done(function(data){
         console.log(data);
         $('.alert-success').show();
       });
