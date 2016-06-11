@@ -1,6 +1,28 @@
 $(document).ready(function(){
+  $('.alert').hide()
   var itemsOrdered = {data:[], totals:{sub:0, grand:0, items:0, tax:0}}
   var itemsFromAPI
+  // hide any error modals
+  $('#itemQuantity, #addItemsToCart, #menuMultiselect').click(function(){
+    $('.alert').hide()
+  })
+
+  function showIssue(issue){
+    $('.alert').html('  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> '+issue)
+    $('.alert').show()
+  }
+
+  function sendPost(data){
+    $.ajax({
+      method: "POST",
+      url: " https://galvanize-eats-api.herokuapp.com/menu",
+      data: data,
+      complete: function(response){
+        console.log('complete' + response);
+      }
+    })
+  }
+
   function calcTotals(){
     itemsOrdered.totals.sub   = 0
     itemsOrdered.totals.items = 0
@@ -17,13 +39,14 @@ $(document).ready(function(){
         itemsOrdered.totals.items += val.qty
       }
     })
-    itemsOrdered.totals.tax = (itemsOrdered.totals.sub * .15)
+    itemsOrdered.totals.tax = (itemsOrdered.totals.sub * .083)
     itemsOrdered.totals.grand = itemsOrdered.totals.sub + itemsOrdered.totals.tax
     $('#subtotal').html(itemsOrdered.totals.sub.toFixed(2))
     $('#tax').html(itemsOrdered.totals.tax.toFixed(2))
     $('#total_items').html(itemsOrdered.totals.items)
     $('#grand_total').html(itemsOrdered.totals.grand.toFixed(2))
   }
+
   $.getJSON('https://galvanize-eats-api.herokuapp.com/menu', function(response){
       itemsFromAPI = response
       var optGroupPizza = $("<optgroup>", {label:'Pizzas'})
@@ -58,8 +81,9 @@ $(document).ready(function(){
   })
   $('#addItemsToCart').click(function(click){
     // any items selected? or qty?
-    if(!$('#menuMultiselect').val()){alert("select an item"); return}
-    if(!$('#itemQuantity').val()){alert("enter a qty"); return}
+    if(parseInt($('#itemQuantity').val()) <= 0){showIssue("Please enter a quantity larger than zero."); return}
+    if(!$('#menuMultiselect').val()){showIssue("Please select at least 1 item."); return}
+    if(!$('#itemQuantity').val()){showIssue("Please enter a valid Quantity."); return}
     // get our items selected and add them to our order obj
     $('#menuMultiselect').val().forEach(function(val, key, arr){
       var item = itemsFromAPI.menu[parseInt(val - 1)]
