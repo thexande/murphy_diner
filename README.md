@@ -1,5 +1,5 @@
 # Firebase Deployment
-Access my application here : [Galvanize Eats Firebase Deployment](https://galvanizeeats-5aa03.firebaseapp.com/order.html)
+Access my application here : [Galvanize Eats Firebase Deployment](https://galvanizeeats-5aa03.firebaseapp.com/index.html)
 
 # Your Mission
 
