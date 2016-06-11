@@ -1,28 +1,24 @@
 $(document).ready(function(){
-  $('.alert').hide()
+  $('.alert-danger').hide()
+  $('.alert-success').hide()
   var itemsOrdered = {data:[], totals:{sub:0, grand:0, items:0, tax:0}}
   var itemsFromAPI
   // hide any error modals
   $('#itemQuantity, #addItemsToCart, #menuMultiselect').click(function(){
-    $('.alert').hide()
+    $('.alert-danger').hide()
   })
-
   function showIssue(issue){
-    $('.alert').html('  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> '+issue)
-    $('.alert').show()
+    $('.alert-danger').html('  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> '+issue)
+    $('.alert-danger').show()
   }
 
   function sendPost(data){
-    $.ajax({
+    return $.ajax({
       method: "POST",
-      url: " https://galvanize-eats-api.herokuapp.com/menu",
+      url: "https://galvanize-eats-api.herokuapp.com/orders",
       data: data,
-      complete: function(response){
-        console.log('complete' + response);
-      }
     })
   }
-
   function calcTotals(){
     itemsOrdered.totals.sub   = 0
     itemsOrdered.totals.items = 0
@@ -46,7 +42,6 @@ $(document).ready(function(){
     $('#total_items').html(itemsOrdered.totals.items)
     $('#grand_total').html(itemsOrdered.totals.grand.toFixed(2))
   }
-
   $.getJSON('https://galvanize-eats-api.herokuapp.com/menu', function(response){
       itemsFromAPI = response
       var optGroupPizza = $("<optgroup>", {label:'Pizzas'})
@@ -73,11 +68,14 @@ $(document).ready(function(){
       })
       $('#menuMultiselect').append(optGroupPizza, optGroupBurger)
   })
-
   $("#customerInfo").submit(function(e){
+      event.preventDefault()
       console.log("submit");
       var data = JSON.stringify($(this).serializeArray())
-      console.log(data);
+      sendPost(data).done(function(data){
+        console.log(data);
+        $('.alert-success').show();
+      });
   })
   $('#addItemsToCart').click(function(click){
     // any items selected? or qty?
