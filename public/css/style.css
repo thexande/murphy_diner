@@ -1,6 +1,6 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);
 #bodyContainer{
-  height:100vh;
+  height100%;
   background-color: red;
   background-image:
     linear-gradient(
@@ -81,7 +81,9 @@ body {
     height:30%;
 }
 
-
+#totals {
+  width: 100%
+}
 
 
 

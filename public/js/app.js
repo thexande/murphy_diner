@@ -1,6 +1,29 @@
 $(document).ready(function(){
-  var itemsOrdered = {data:[]}
+  var itemsOrdered = {data:[], totals:{sub:0, grand:0, items:0, tax:0}}
   var itemsFromAPI
+  function calcTotals(){
+    itemsOrdered.totals.sub   = 0
+    itemsOrdered.totals.items = 0
+    itemsOrdered.totals.tax   = 0
+    itemsOrdered.totals.grand = 0
+    itemsOrdered.data.forEach(function(val, key){
+      if(val.qty != 0){
+        for (var i = 0; i < val.qty; i++) {
+          itemsOrdered.totals.sub += val.price
+          itemsOrdered.totals.items++
+        }
+      } else {
+        itemsOrdered.totals.sub += val.price
+        itemsOrdered.totals.items += val.qty
+      }
+    })
+    itemsOrdered.totals.tax = (itemsOrdered.totals.sub * .15)
+    itemsOrdered.totals.grand = itemsOrdered.totals.sub + itemsOrdered.totals.tax
+    $('#subtotal').html(itemsOrdered.totals.sub.toFixed(2))
+    $('#tax').html(itemsOrdered.totals.tax.toFixed(2))
+    $('#total_items').html(itemsOrdered.totals.items)
+    $('#grand_total').html(itemsOrdered.totals.grand.toFixed(2))
+  }
   $.getJSON('https://galvanize-eats-api.herokuapp.com/menu', function(response){
       itemsFromAPI = response
       var optGroupPizza = $("<optgroup>", {label:'Pizzas'})
@@ -14,12 +37,12 @@ $(document).ready(function(){
       }
       _.sortBy(response.menu, "type").forEach(function(val, key){
         if(val.type === 'burger'){
-          var spaceDiff = 55 - (parseInt(val.name.length)
+          var spaceDiff = 65 - (parseInt(val.name.length)
             + parseInt(val.price.toString().length));
           optGroupBurger.append($('<option>',
             {value:val.id, html:val.name + spaceReturn(spaceDiff, val.price) + val.price}))
         } else if(val.type === 'pizza'){
-          var spaceDiff = 55 - (parseInt(val.name.length)
+          var spaceDiff = 65 - (parseInt(val.name.length)
             + parseInt(val.price.toString().length));
           optGroupPizza.append($('<option>',
             {value:val.id, html:val.name + spaceReturn(spaceDiff, val.price) + val.price}))
@@ -32,8 +55,6 @@ $(document).ready(function(){
       console.log("submit");
       var data = JSON.stringify($(this).serializeArray())
       console.log(data);
-
-
   })
   $('#addItemsToCart').click(function(click){
     // any items selected? or qty?
@@ -42,15 +63,15 @@ $(document).ready(function(){
     // get our items selected and add them to our order obj
     $('#menuMultiselect').val().forEach(function(val, key, arr){
       var item = itemsFromAPI.menu[parseInt(val - 1)]
-
-      console.log();
-
+      // does our object exist in our arr? add qty etc.
       if(itemsOrdered.data.indexOf(item) != -1){
         itemsOrdered.data.filter((a) => {return a['id']===item.id})[0].qty
           += parseInt($('#itemQuantity').val())
+        calcTotals()
       } else {
         itemsOrdered.data.push(item)
         item['qty'] = parseInt($('#itemQuantity').val())
+        calcTotals()
       }
     })
     // reload data table
@@ -63,12 +84,6 @@ $(document).ready(function(){
     "language": {
       "emptyTable": "Add some items to your order!"
     },
-    columns: [
-       {title:'id'},
-       {title:'name'},
-       {title:'price'},
-       {title:'type'}
-     ],
     searching: false,
     ordering: false,
     paging: false,
